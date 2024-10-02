@@ -10,15 +10,15 @@ This project illustrates how to create keystore of BCFKS type that can be used t
    - Fedora 40 can be checked using command `sudo fips-mode-setup --check`
 3. Configure JDK to use Bouncy Castle BCFIPS security provider.
    - Do following changes in file `$JAVA_HOME/conf/security/java.security`
-```
-security.provider.1=org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider C:DEFRND[SHA256];ENABLE{ALL};
-security.provider.2=com.sun.net.ssl.internal.ssl.Provider BCFIPS
-security.provider.3=sun.security.provider.Sun
-
-...
-
-securerandom.strongAlgorithms=PKCS11:SunPKCS11-NSS-FIPS
-```
+   ```
+   security.provider.1=org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider C:DEFRND[SHA256];ENABLE{ALL};
+   security.provider.2=com.sun.net.ssl.internal.ssl.Provider BCFIPS
+   security.provider.3=sun.security.provider.Sun
+   
+   ...
+   
+   securerandom.strongAlgorithms=PKCS11:SunPKCS11-NSS-FIPS
+   ```
 
 ## Setup
 
@@ -30,16 +30,16 @@ securerandom.strongAlgorithms=PKCS11:SunPKCS11-NSS-FIPS
 4. Configure database PostgreSQL [database for use with Keycloak](https://www.keycloak.org/server/db)
    - Do not forget to use password from step 2.
 5. Add following `--add-opens` argument to server start script
-```
---add-opens=java.base/sun.security.provider=ALL-UNNAMED
-```
+   ```
+   --add-opens=java.base/sun.security.provider=ALL-UNNAMED
+   ```
 6. Set configuration to use keystore. `./bin/kc.sh build --vault=keystore`
 7. Run this example to enable FIPS mode for Keycloak 
-```
-./bin/kc.sh start --hostname localhost --http-host localhost --http-enabled true --hostname-strict-https=false --db-url-host=localhost --db-username=keycloak --vault-file=keycloak-fips-setup/keystore.bcfks --vault-pass=secretPwd1 --vault-type=BCFKS --features=fips
-```
+   ```
+   ./bin/kc.sh start --hostname localhost --http-host localhost --http-enabled true --hostname-strict-https=false --db-url-host=localhost --db-username=keycloak --vault-file=keycloak-fips-setup/keystore.bcfks --vault-pass=secretPwd1 --vault-type=BCFKS --features=fips
+   ```
 8. To run the server next time use this command
-```
-./bin/kc.sh start --hostname localhost --http-host localhost --http-enabled true --hostname-strict-https=false --db-url-host=localhost --db-username=keycloak --vault-file=keycloak-fips-setup/keystore.bcfks --vault-pass=secretPwd1 --vault-type=BCFKS --optimized
-```
+   ```
+   ./bin/kc.sh start --hostname localhost --http-host localhost --http-enabled true --hostname-strict-https=false --db-url-host=localhost --db-username=keycloak --vault-file=keycloak-fips-setup/keystore.bcfks --vault-pass=secretPwd1 --vault-type=BCFKS --optimized
+   ```
 9. Check if the running Keycloak Server works as expected and is connected to the database. 
